@@ -1,0 +1,26 @@
+[
+  {
+    "connector": "CN1-CN2",
+    "pin": 1,
+    "boardA_net": "VCC_5V",
+    "boardA_voltage": 5,
+    "boardB_net": "VIN_12V",
+    "boardB_voltage": 12
+  },
+  {
+    "connector": "CN1-CN2",
+    "pin": 2,
+    "boardA_net": "GND",
+    "boardA_voltage": 0,
+    "boardB_net": "GND",
+    "boardB_voltage": 0
+  },
+  {
+    "connector": "CN1-CN2",
+    "pin": 5,
+    "boardA_net": "NC",
+    "boardA_voltage": 0,
+    "boardB_net": "RS485_A",
+    "boardB_voltage": 0
+  }
+]

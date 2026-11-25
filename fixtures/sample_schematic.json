@@ -1,0 +1,8 @@
+[
+  { "designator": "R24", "value": "30K", "footprint": "0603" },
+  { "designator": "R27", "value": "27K", "footprint": "0603" },
+  { "designator": "D1", "value": "SS34", "footprint": "SMB" },
+  { "designator": "C_BUS1", "value": "47uF", "footprint": "Radial-10mm" },
+  { "designator": "U1", "value": "IP5356M", "footprint": "QFN40" },
+  { "designator": "TVS1", "value": "SMBJ15A", "footprint": "SMB" }
+]

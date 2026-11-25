@@ -1,0 +1,11 @@
+{
+  "name": "hardwareguard-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Codegeist 2026 Track 3 + Best App with Atlassian MCP: Deterministic PCBA BOM & IPD Release-Gate MCP Server on Atlassian Forge",
+  "scripts": {
+    "test": "node --test test/bomEngine.test.mjs"
+  },
+  "license": "MIT"
+}
