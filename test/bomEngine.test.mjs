@@ -9,7 +9,7 @@ import {
   checkIpdGateResolver,
   generateMinutesResolver,
   traceEcoResolver,
-} from "../src/index.mjs";
+} from "../src/index.js";
 import { handleMcpMessage } from "../src/mcp-stdio.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

@@ -3,7 +3,7 @@ import {
   evaluateIpdGate,
   formatReviewMinutes,
   traceCrossBoardConnectors,
-} from "./bomEngine.mjs";
+} from "./bomEngine.js";
 
 export async function auditBomResolver({ bomCsv, schematicJson }) {
   const schematic = schematicJson ? JSON.parse(schematicJson) : [];

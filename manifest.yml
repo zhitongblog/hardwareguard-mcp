@@ -1,63 +1,66 @@
 modules:
   rovo:mcp:
     - key: hardwareguard-mcp-server
-      name: "HardwareGuard BOM & IPD Release-Gate MCP"
-      description: "Deterministic PCBA BOM auditing, cross-board voltage/footprint checks, and conservative IPD pilot/mass-production release gating for hardware engineering teams in Jira and Confluence."
+      name: "HardwareGuard IPD MCP"
       tools:
-        - key: audit-bom-table
-          name: "Audit PCBA BOM vs Schematic"
-          description: "Compare a BOM CSV against schematic/reference parts to detect swapped values, footprint mismatches (e.g. SMB vs SMA), duplicate designators, missing MPNs, and derating violations."
-          function: auditBomResolver
-          parameters:
-            - name: bomCsv
-              type: string
-              description: "Raw BOM CSV text (columns: Designator,Value,Footprint,MPN,VoltageRating,BusVoltage,Status)"
-              required: true
-            - name: schematicJson
-              type: string
-              description: "Optional JSON array of schematic components [{designator,value,footprint}] for L2 cross-check"
-              required: false
-        - key: check-ipd-gate
-          name: "Evaluate IPD Mass-Production Gate"
-          description: "Evaluate open hardware issues and risk-accepted exceptions to return a conservative PASS / CONDITIONAL / REJECT tape-out verdict with owner routing."
-          function: checkIpdGateResolver
-          parameters:
-            - name: boardName
-              type: string
-              description: "Hardware board or product name (e.g. PB95-Mainboard-RevC)"
-              required: true
-            - name: issuesJson
-              type: string
-              description: "JSON array of issues [{id,layer,severity,summary,riskAccepted}]"
-              required: true
-        - key: trace-hardware-eco
-          name: "Trace Hardware ECO Cross-Board Risk"
-          description: "Validate connector pinout and power-domain compatibility between two mated PCBs (L4 cross-board check)."
-          function: traceEcoResolver
-          parameters:
-            - name: connectorsJson
-              type: string
-              description: "JSON array of mated pin pairs [{connector,pin,boardA_net,boardA_voltage,boardB_net,boardB_voltage}]"
-              required: true
-        - key: generate-review-minutes
-          name: "Generate Hardware Review Minutes"
-          description: "Produce executive-ready Markdown review minutes with verdict, blockers by owner, and explicit risk-accepted ledger."
-          function: generateMinutesResolver
-          parameters:
-            - name: boardName
-              type: string
-              description: "Board or product name"
-              required: true
-            - name: auditJson
-              type: string
-              description: "JSON output from audit-bom-table or check-ipd-gate"
-              required: true
+        - audit-bom-table
+        - check-ipd-gate
+        - trace-hardware-eco
+        - generate-review-minutes
 
-  jira:issuePanel:
-    - key: hardwareguard-eco-panel
-      title: "HardwareGuard IPD Gate"
-      function: ecoPanelResolver
-      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+  action:
+    - key: audit-bom-table
+      name: "Audit PCBA BOM vs Schematic"
+      function: auditBomResolver
+      actionVerb: GET
+      description: "Compare a PCBA BOM CSV against schematic reference parts to detect swapped values, footprint mismatches (SMB vs SMA), duplicate designators, missing MPNs, and capacitor derating violations."
+      inputs:
+        bomCsv:
+          title: "BOM CSV"
+          type: string
+          description: "Raw BOM CSV text (Designator,Value,Footprint,MPN,VoltageRating,BusVoltage,Status)"
+        schematicJson:
+          title: "Schematic JSON"
+          type: string
+          description: "Optional JSON array of schematic components [{designator,value,footprint}]"
+    - key: check-ipd-gate
+      name: "Evaluate IPD Release Gate"
+      function: checkIpdGateResolver
+      actionVerb: GET
+      description: "Evaluate open hardware issues and risk-accepted exceptions to compute a conservative PASS, CONDITIONAL, or REJECT tape-out verdict with owner routing."
+      inputs:
+        boardName:
+          title: "Board Name"
+          type: string
+          description: "Hardware board or product name (e.g. PB95-Mainboard-RevC)"
+        issuesJson:
+          title: "Issues JSON"
+          type: string
+          description: "JSON array of defect issues [{id,layer,severity,summary,riskAccepted}]"
+    - key: trace-hardware-eco
+      name: "Trace Cross-Board ECO Risk"
+      function: traceEcoResolver
+      actionVerb: GET
+      description: "Validate connector pinout and power-domain compatibility between two mated PCBs (L4 cross-board voltage conflict and open signal check)."
+      inputs:
+        connectorsJson:
+          title: "Connectors JSON"
+          type: string
+          description: "JSON array of mated pin pairs [{connector,pin,boardA_net,boardA_voltage,boardB_net,boardB_voltage}]"
+    - key: generate-review-minutes
+      name: "Generate Hardware Review Minutes"
+      function: generateMinutesResolver
+      actionVerb: GET
+      description: "Produce executive-ready Markdown hardware review minutes with release verdict, blockers by owner, and visible risk-accepted ledger."
+      inputs:
+        boardName:
+          title: "Board Name"
+          type: string
+          description: "Board or product name"
+        auditJson:
+          title: "Audit JSON"
+          type: string
+          description: "JSON output from audit-bom-table or check-ipd-gate"
 
   function:
     - key: auditBomResolver
@@ -68,8 +71,6 @@ modules:
       handler: index.traceEcoResolver
     - key: generateMinutesResolver
       handler: index.generateMinutesResolver
-    - key: ecoPanelResolver
-      handler: index.ecoPanelResolver
 
 permissions:
   scopes:
@@ -80,4 +81,4 @@ permissions:
 app:
   runtime:
     name: nodejs22.x
-  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
+  id: ari:cloud:ecosystem::app/ca9901af-d16e-4831-bb64-b7e43575f20b

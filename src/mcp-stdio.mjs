@@ -11,7 +11,7 @@ import {
   checkIpdGateResolver,
   generateMinutesResolver,
   traceEcoResolver,
-} from "./index.mjs";
+} from "./index.js";
 
 const TOOLS = [
   {
