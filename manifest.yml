@@ -80,4 +80,4 @@ permissions:
 app:
   runtime:
     name: nodejs22.x
-  id: ari:cloud:forge::app/REPLACE-AFTER-FORGE-REGISTER
+  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
